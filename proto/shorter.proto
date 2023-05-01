@@ -1,0 +1,26 @@
+syntax = "proto3";
+package link_shorter;
+
+option go_package = "link_shorter/protobuf/shorter;shorter";
+
+message GetLinkRequest {
+  string token = 1;
+
+}
+
+message GetLinkResponse {
+  string url = 1;
+}
+
+message CreateLinkRequest {
+  string url = 1;
+}
+
+message CreateLinkResponse {
+  string token = 1;
+}
+
+service ShorterService {
+  rpc GetLink (GetLinkRequest) returns (GetLinkResponse) {}
+  rpc CreateLink (CreateLinkRequest) returns (CreateLinkResponse) {}
+}

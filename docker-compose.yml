@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  psqldb:
+    image: postgres
+    restart: on-failure
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME}" ]
+      interval: 3s
+    profiles:
+      - postgresql
+
+  migrate:
+    image: artsafin/goose-migrations
+    volumes:
+      - ./migrations:/migrations
+    env_file:
+      - .env
+    command: postgres "host=psqldb port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWORD} dbname=${DB_NAME} sslmode=${DB_SSL_MODE}" up
+    depends_on:
+      psqldb:
+        condition: service_healthy
+    profiles:
+      - postgresql
+
+  app_psql:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - TYPE=postgresql
+      - DB_HOST=psqldb
+    depends_on:
+      psqldb:
+        condition: service_started
+      migrate:
+        condition: service_completed_successfully
+    profiles:
+      - postgresql
+
+  app_inmemory:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - TYPE=inmemory
+    profiles:
+      - inmemory
+
+volumes:
+  data:
