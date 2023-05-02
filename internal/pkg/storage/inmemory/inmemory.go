@@ -1,10 +1,11 @@
 package inmemory
 
 import (
-	"golang.org/x/net/context"
+	"context"
+	"sync"
+
 	"link_shorter/internal/pkg/model"
 	"link_shorter/internal/pkg/storage"
-	"sync"
 )
 
 type inMemory struct {

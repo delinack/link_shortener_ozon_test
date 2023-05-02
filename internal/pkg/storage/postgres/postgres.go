@@ -1,13 +1,15 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
-	"golang.org/x/net/context"
+	"log"
+
 	"link_shorter/internal/config"
 	"link_shorter/internal/pkg/storage"
-	"log"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq" // nolint
 )
 
 const (

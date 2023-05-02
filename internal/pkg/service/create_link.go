@@ -1,13 +1,15 @@
 package service
 
 import (
-	"crypto/md5"
 	"fmt"
-	"github.com/google/uuid"
-	"golang.org/x/net/context"
+	"strings"
+
 	"link_shorter/internal/pkg/model"
 	"link_shorter/internal/pkg/storage"
-	"strings"
+
+	"crypto/md5" // nolint
+	"github.com/google/uuid"
+	"golang.org/x/net/context"
 )
 
 const (
@@ -18,7 +20,7 @@ const (
 func tokenGenerate() string {
 	id := uuid.New()
 	idBytes := []byte(id.String())
-	hash := md5.Sum(idBytes)
+	hash := md5.Sum(idBytes) //nolint
 
 	var indices [hashLength]int
 	for i := 0; i < hashLength; i++ {

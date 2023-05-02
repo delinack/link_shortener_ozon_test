@@ -1,10 +1,12 @@
 package inmemory
 
 import (
-	"github.com/google/uuid"
-	"golang.org/x/net/context"
-	"link_shorter/internal/pkg/model"
+	"context"
 	"time"
+
+	"link_shorter/internal/pkg/model"
+
+	"github.com/google/uuid"
 )
 
 func (i *inMemory) fillURLMap(url, token string) *model.Link {
@@ -12,7 +14,7 @@ func (i *inMemory) fillURLMap(url, token string) *model.Link {
 	defer i.urlMutex.Unlock()
 
 	v := &model.Link{
-		Id:        uuid.New(),
+		ID:        uuid.New(),
 		URL:       url,
 		Token:     token,
 		CreatedAt: time.Now(),

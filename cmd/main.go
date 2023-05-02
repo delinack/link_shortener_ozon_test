@@ -1,9 +1,13 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
+	"log"
+	"net"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"link_shorter/internal/config"
 	"link_shorter/internal/handler"
 	"link_shorter/internal/pkg/service"
@@ -11,11 +15,15 @@ import (
 	"link_shorter/internal/pkg/storage/inmemory"
 	"link_shorter/internal/pkg/storage/postgres"
 	"link_shorter/internal/protobuf/link_shorter/protobuf/shorter"
-	"log"
-	"net"
-	"os"
-	"os/signal"
-	"time"
+
+	"github.com/joho/godotenv"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+)
+
+const (
+	memory     = "inmemory"
+	postgresql = "postgresql"
 )
 
 func main() {
@@ -30,9 +38,9 @@ func main() {
 
 	storeType := os.Getenv("TYPE")
 	var store storage.Store
-	if storeType == "inmemory" {
+	if storeType == memory {
 		store = inmemory.NewInMemory()
-	} else if storeType == "postgresql" {
+	} else if storeType == postgresql {
 		store = postgres.NewPostgres(cfg)
 	} else {
 		log.Fatalf("unknown storage type")
@@ -54,8 +62,8 @@ func main() {
 		}
 	}()
 
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt, os.Kill)
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
 	s.GracefulStop()

@@ -1,7 +1,8 @@
 package service
 
 import (
-	"golang.org/x/net/context"
+	"context"
+
 	"link_shorter/internal/pkg/model"
 	"link_shorter/internal/pkg/storage"
 )

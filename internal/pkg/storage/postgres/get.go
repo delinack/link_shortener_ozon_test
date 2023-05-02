@@ -1,9 +1,10 @@
 package postgres
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
-	"golang.org/x/net/context"
+
 	"link_shorter/internal/pkg/model"
 	"link_shorter/internal/pkg/storage"
 )

@@ -4,11 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"regexp"
+
 	"link_shorter/internal/pkg/storage"
 	"link_shorter/internal/protobuf/link_shorter/protobuf/shorter"
-	"regexp"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func tokenValidate(token string) error {

@@ -1,13 +1,12 @@
 include .env
 
-DB="host=$(DB_HOST) port=$(DB_PORT) user=$(DB_USERNAME) password=$(DB_PASSWORD) dbname=$(DB_NAME) sslmode=$(DB_SSL_MODE)"
 TEST_DB="host=$(DB_HOST) port=$(DB_PORT) user=$(DB_USERNAME) password=$(DB_PASSWORD) dbname=$(DB_TEST_NAME) sslmode=$(DB_SSL_MODE)"
 CMD= cmd/main.go
 
 db:
 		psql -c "drop database if exists $(DB_TEST_NAME)"
 		psql -c "create database $(DB_TEST_NAME)"
-		goose -allow-missing -dir migrations postgres $(TEST_DB) up
+		goose -dir migrations postgres $(TEST_DB) up
 
 test: 	db
 		go test ./...
@@ -24,4 +23,7 @@ postgresql:
 inmemory:
 		docker-compose --profile inmemory up --build
 
-.PHONY:	db protogen postgresql test db
+linter:
+		golangci-lint --config .golangci.yaml run
+
+.PHONY:	db test protogen postgresql inmemory linter

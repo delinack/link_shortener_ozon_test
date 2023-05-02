@@ -1,8 +1,9 @@
 package service
 
 import (
+	"context"
 	"fmt"
-	"golang.org/x/net/context"
+
 	"link_shorter/internal/pkg/model"
 )
 

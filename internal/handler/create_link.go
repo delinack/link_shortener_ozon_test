@@ -3,10 +3,12 @@ package handler
 import (
 	"context"
 	"fmt"
+	"net/url"
+
+	"link_shorter/internal/protobuf/link_shorter/protobuf/shorter"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"link_shorter/internal/protobuf/link_shorter/protobuf/shorter"
-	"net/url"
 )
 
 func urlValidate(link string) error {

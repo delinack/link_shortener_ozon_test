@@ -2,15 +2,17 @@ package handler
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/require"
-	"golang.org/x/net/context"
+	"testing"
+
 	"link_shorter/internal/config"
 	"link_shorter/internal/pkg/service"
 	"link_shorter/internal/pkg/storage"
 	"link_shorter/internal/pkg/storage/inmemory"
 	"link_shorter/internal/pkg/storage/postgres"
 	"link_shorter/internal/protobuf/link_shorter/protobuf/shorter"
-	"testing"
+
+	"github.com/stretchr/testify/require"
+	"golang.org/x/net/context"
 )
 
 const (
